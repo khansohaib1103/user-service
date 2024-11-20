@@ -1,13 +1,13 @@
-package com.futurenostics.models;
+package com.futurenostics.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.sql.Timestamp;
 import java.time.ZonedDateTime;
 import java.util.Set;
 
@@ -16,34 +16,35 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "USER")
+@Builder
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "USER_ID")
     private  Long id;
     @Column(name = "USER_NAME",length = 10)
-    private String name;
+    private String userName;
     @Column(name = "USER_EMAIL",length = 20)
-    private String email;
+    private String userEmail;
     @Column(name = "USER_PWD",length = 64)
-    private String password;
+    private String userPassword;
     @CreationTimestamp
     @Column(name = "SYS_CREAT_TS", length = 64)
-    private ZonedDateTime createDate;
+    private ZonedDateTime userCreated;
 
     @UpdateTimestamp
     @Column(name = "SYS_LAST_UPDT_TS", length = 64)
-    private ZonedDateTime lastUpdatedUserDate;
+    private ZonedDateTime userUpdated;
 
     @PrePersist
     private void prePersistFnc() {
         var time = ZonedDateTime.now();
-        setCreateDate(time);
+        setUserCreated(time);
     }
 
     @PreUpdate
     public void preUpdateFnc() {
-        setLastUpdatedUserDate(ZonedDateTime.now());
+        setUserUpdated(ZonedDateTime.now());
     }
 
     @ElementCollection(fetch = FetchType.EAGER)
